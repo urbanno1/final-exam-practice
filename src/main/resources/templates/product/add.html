@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/master-layout}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="author" content="O. Kalu">
+    <link rel="icon" href="favicon.ico">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.2/cerulean/bootstrap.min.css" rel="stylesheet" integrity="sha384-EmRcsPP774S9MOi4ywB+JXUWjYnBdyInMzG2XsC5siZEUpexqxOMJW358dCYEjPu" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/master.css}">
+    <title>eSRM - a Supplier management application</title>
+</head>
+<body>
+
+<div style="padding-top:1em;" class="container">
+    <th:block layout:fragment="content">
+        <div style="margin-bottom: 1em;">
+            <span style="font-size: 2em; color: #32a5e7;">New Book Form</span>
+        </div>
+
+        <form id="newCustomerForm" method="post" th:action="@{${page_links.get('PRODUCT_ADD_URL')}}" th:object="${product}">
+            <fieldset>
+                <input type="hidden" name="productId" th:value="${product.productId}"/>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="productNumber">Product Number</label>
+                            <span th:if="${#fields.hasErrors('productNumber')}" th:errors="*{productNumber}"
+                                  class="alert alert-danger"></span>
+                            <input id="productNumber" name="productNumber" type="number" placeholder="e.g: 10001" class="form-control"
+                                   th:value="${product.productNumber}">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                                  class="alert alert-danger"></span>
+                            <input id="name" name="name" type="text" class="form-control" th:value="${product.name}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="unitPrice">Unit Price</label>
+                            <span th:if="${#fields.hasErrors('unitPrice')}" th:errors="*{unitPrice}"
+                                  class="alert alert-danger"></span>
+                            <input id="unitPrice" name="unitPrice" type="text" class="form-control"
+                                   aria-describedby="unitPriceHelp" placeholder="0.00"
+                                   pattern="^[+-]?[0-9]{1,3}(?:,?[0-9]{3})*(?:\.[0-9]{2})?$"
+                                   th:value="${product.unitPrice}">
+                            <small id="unitPriceHelp" class="form-text text-muted">Enter a valid decimal amount; in dollars and cents; no comma (e.g. 1.99)</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="quantityInStock">Qty in Stock</label>
+                            <span th:if="${#fields.hasErrors('quantityInStock')}" th:errors="*{quantityInStock}"
+                                  class="alert alert-danger"></span>
+                            <input id="quantityInStock" name="quantityInStock" type="number" class="form-control" th:value="${product.quantityInStock}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="dateSupplied">Date Supplied</label>
+                            <span th:if="${#fields.hasErrors('dateSupplied')}" th:errors="*{dateSupplied}"
+                                  class="alert alert-danger"></span>
+                            <input id="dateSupplied" name="dateSupplied" placeholder="e.g: 2019-07-19"
+                                   type="date" class="form-control" th:value="${product.dateSupplied}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <div class="form-group">
+                            <label for="supplierId">List of Supplier</label>
+                            <span th:if="${#fields.hasErrors('supplier')}" th:errors="*{supplier}"
+                                  class="alert alert-danger"></span>
+                            <select name="supplier.supplierId" id="supplierId" class="form-control" required="required">
+                                <option value="">Select a Supplier</option>
+                                <option th:each="supplier : ${suppliers}" th:value="${supplier.supplierId}" th:text="${supplier.name}"></option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div style="float:right;">
+                    <a th:href="@{${page_links.get('PRODUCT_LIST_URL')}}" class="btn btn-outline-warning">Cancel</a>&nbsp;&nbsp;&nbsp;
+                    <button id="btnSubmit" type="submit" class="btn btn-outline-success">Save Product</button>
+                </div>
+            </fieldset>
+        </form>
+    </th:block>
+
+
+</div>
+
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+</body>
+</html>
